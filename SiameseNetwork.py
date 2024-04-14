@@ -11,7 +11,7 @@ from keras.optimizers.schedules import ExponentialDecay
 import keras.ops as K
 from keras.losses import MeanSquaredError
 
-
+tf.config.run_functions_eagerly(True)
 #parametri della rete
 epochs = 10
 batch_size = 16
@@ -31,10 +31,10 @@ target_distances = np.zeros(num_samples_train)
 val_target_distances=np.zeros(num_samples_val)
 
 #insalle cartelle dei file
-dir_codify=r'...\img_celeba_10000'
-dir_images_train=r'...\img_celeba_10000\img_celeba_10000_train'
-dir_images_val=r'...\img_celeba_10000\img_celeba_10000_valid'
-dir_image_test=r'...\img_celeba_10000\img_celeba_2000_test'
+dir_codify=r'C:\Users\antho\Desktop\img_celeba_10000'
+dir_images_train=r'C:\Users\antho\Desktop\img_celeba_10000\img_celeba_10000_train'
+dir_images_val=r'C:\Users\antho\Desktop\img_celeba_10000\img_celeba_10000_valid'
+dir_image_test=r'C:\Users\antho\Desktop\img_celeba_10000\img_celeba_2000_test'
 
 #path di immagini ed embeddings
 train_embeddings=mu.open_csv(dir_codify,'\codify_celeba_10000_train.csv',num_samples_train)
@@ -84,9 +84,9 @@ optimizer = keras.optimizers.Adam(learning_rate=0.01)
 
 
 #chiamata alla loss personalizzata in my utility
-#siamese.compile(optimizer=optimizer, loss=mu.loss(margin=margin))
+siamese.compile(optimizer=optimizer, loss=mu.loss(margin=margin))
 #chiamata ad una loss di keras
-siamese.compile(optimizer=optimizer, loss=MeanSquaredError)
+#siamese.compile(optimizer=optimizer, loss=MeanSquaredError)
 siamese.summary()
 
 
@@ -103,7 +103,6 @@ test_embeddings = np.array(val_embeddings, dtype=np.float32)
 
 # Assicurati che le etichette abbiano la stessa lunghezza del numero di campioni di addestramento
 assert len(train_embeddings) == num_samples_train, "Errore: Lunghezza delle etichette non corrispondente al numero di campioni di addestramento."
-
 
 #addestramento
 history = siamese.fit([train_images, train_embeddings], train_embeddings, epochs=epochs, batch_size=batch_size,
