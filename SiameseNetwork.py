@@ -12,6 +12,7 @@ import keras.ops as K
 from keras.losses import MeanSquaredError
 
 tf.config.run_functions_eagerly(True)
+
 # Parametri della rete
 epochs = 10
 batch_size = 16
