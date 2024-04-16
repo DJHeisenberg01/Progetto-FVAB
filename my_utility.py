@@ -10,6 +10,9 @@ import csv
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 import numpy as np
 from tensorflow.keras.callbacks import Callback
+from scipy.spatial.distance import cityblock
+
+
 
 
 def open_csv(dir,file_name,n):
@@ -49,6 +52,9 @@ def euclidean_distance(vects):
     x, y = vects
     return tf.sqrt(tf.reduce_sum(tf.square(x - y), axis=1, keepdims=True))
 
+def manhattan_distance(vects):
+    x, y = vects
+    return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
 def similarity_accuracy(y_true, y_pred, threshold=0.5):
     return tf.keras.metrics.binary_accuracy(tf.cast(y_true < threshold, tf.float32), tf.cast(y_pred < threshold, tf.float32))
