@@ -14,7 +14,6 @@ from scipy.spatial.distance import cityblock
 
 
 
-
 def open_csv(dir,file_name,n):
     with open(dir+file_name) as csv_file:
         dataread = list(csv.reader(csv_file, delimiter=','))
@@ -55,6 +54,8 @@ def euclidean_distance(vects):
 def manhattan_distance(vects):
     x, y = vects
     return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
+
+
 
 def similarity_accuracy(y_true, y_pred, threshold=0.5):
     return tf.keras.metrics.binary_accuracy(tf.cast(y_true < threshold, tf.float32), tf.cast(y_pred < threshold, tf.float32))
