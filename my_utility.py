@@ -55,6 +55,11 @@ def manhattan_distance(vects):
     x, y = vects
     return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
+def canberra_distance(vects):
+    x, y = vects
+    numerator = tf.abs(x - y)
+    denominator = tf.abs(x) + tf.abs(y)
+    return tf.reduce_sum(numerator / denominator, axis=1, keepdims=True)
 
 
 def similarity_accuracy(y_true, y_pred, threshold=0.5):
