@@ -61,6 +61,32 @@ def canberra_distance(vects):
     denominator = tf.abs(x) + tf.abs(y)
     return tf.reduce_sum(numerator / denominator, axis=1, keepdims=True)
 
+def hamming_distance(vects):
+    x, y = vects
+    hamming_bool = tf.not_equal(x, y)
+    hamming_sum = tf.reduce_sum(tf.cast(hamming_bool, dtype=tf.float32), axis=1)
+    return hamming_sum
+
+def chebyshev_distance(vects):
+    x, y = vects
+    chebyshev_diff = tf.abs(x - y)
+    chebyshev_max = tf.reduce_max(chebyshev_diff, axis=1)
+    return chebyshev_max
+
+def bray_curtis_distance(vects):
+    x, y = vects
+    sum_diff = tf.reduce_sum(tf.abs(x - y), axis=1)
+    sum_sum = tf.reduce_sum(tf.abs(x + y), axis=1)
+    return sum_diff / sum_sum
+
+def mahalanobis_distance(vects, covariance_matrix):
+    x, y = vects
+    diff = x - y
+    diff_transpose = tf.transpose(diff)
+    mahalanobis = tf.linalg.matmul(diff, tf.linalg.inv(covariance_matrix))
+    mahalanobis = tf.linalg.matmul(mahalanobis, diff_transpose)
+    return tf.sqrt(mahalanobis)
+
 
 def similarity_accuracy(y_true, y_pred, threshold=0.5):
     return tf.keras.metrics.binary_accuracy(tf.cast(y_true < threshold, tf.float32), tf.cast(y_pred < threshold, tf.float32))
