@@ -87,6 +87,17 @@ def mahalanobis_distance(vects, covariance_matrix):
     mahalanobis = tf.linalg.matmul(mahalanobis, diff_transpose)
     return tf.sqrt(mahalanobis)
 
+def cosine_distance(vects):
+    x, y = vects
+    cos = tf.keras.losses.CosineSimilarity(axis=-1, reduction="sum_over_batch_size", name="cosine_similarity")
+    return cos.call(x,y)
+
+def standard_euclidean(vects):
+    x, y = vects
+    #manca il vettore delle varianze
+    return tf.sqrt(tf.reduce_sum(tf.square(x - y), axis=1, keepdims=True))
+
+
 
 def similarity_accuracy(y_true, y_pred, threshold=0.5):
     return tf.keras.metrics.binary_accuracy(tf.cast(y_true < threshold, tf.float32), tf.cast(y_pred < threshold, tf.float32))
