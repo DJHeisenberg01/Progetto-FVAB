@@ -11,6 +11,7 @@ from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bo
 import numpy as np
 from tensorflow.keras.callbacks import Callback
 from scipy.spatial.distance import cityblock
+import sklearn.metrics.pairwise
 
 
 
@@ -52,8 +53,9 @@ def euclidean_distance(vects):
     return tf.sqrt(tf.reduce_sum(tf.square(x - y), axis=1, keepdims=True))
 
 def manhattan_distance(vects):
-    x, y = vects
-    return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
+    x, y = vects    
+    return tf.convert_to_tensor(cityblock(x,y))
+    #return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
 def canberra_distance(vects):
     x, y = vects
@@ -64,7 +66,7 @@ def canberra_distance(vects):
 def hamming_distance(vects):
     x, y = vects
     hamming_bool = tf.not_equal(x, y)
-    hamming_sum = tf.reduce_sum(tf.cast(hamming_bool, dtype=tf.float32), axis=1)
+    hamming_sum = tf.reduce_sum(tf.cast(hamming_bool, dtype=tf.float32), axis=1, keepdims = True)
     return hamming_sum
 
 def chebyshev_distance(vects):
@@ -75,10 +77,13 @@ def chebyshev_distance(vects):
 
 def bray_curtis_distance(vects):
     x, y = vects
-    sum_diff = tf.reduce_sum(tf.abs(x - y), axis=1)
-    sum_sum = tf.reduce_sum(tf.abs(x + y), axis=1)
-    return sum_diff / sum_sum
+    sum_diff = tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
+    sum_sum = tf.reduce_sum(tf.abs(x + y), axis=1, keepdims=True)
+    
+    return tf.divide(sum_diff, sum_sum)
 
+
+#covariance_matrix da definire
 def mahalanobis_distance(vects, covariance_matrix):
     x, y = vects
     diff = x - y
