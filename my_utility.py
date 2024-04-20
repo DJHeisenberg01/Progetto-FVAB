@@ -11,7 +11,7 @@ from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bo
 import numpy as np
 from tensorflow.keras.callbacks import Callback
 from scipy.spatial.distance import cityblock
-import sklearn.metrics.pairwise
+import sklearn.metrics.pairwise as calc
 
 
 
@@ -55,6 +55,7 @@ def euclidean_distance(vects):
 def manhattan_distance(vects):
     x, y = vects    
     return tf.convert_to_tensor(cityblock(x,y))
+    ca
     #return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
 def canberra_distance(vects):
