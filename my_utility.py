@@ -2,6 +2,7 @@ import random
 import numpy as np
 import keras
 from keras import ops
+import keras.backend as K
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import os
@@ -53,10 +54,8 @@ def euclidean_distance(vects):
     return tf.sqrt(tf.reduce_sum(tf.square(x - y), axis=1, keepdims=True))
 
 def manhattan_distance(vects):
-    x, y = vects    
-    return tf.convert_to_tensor(cityblock(x,y))
-    ca
-    #return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
+    x, y = vects   
+    return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
 def canberra_distance(vects):
     x, y = vects
@@ -66,9 +65,12 @@ def canberra_distance(vects):
 
 def hamming_distance(vects):
     x, y = vects
-    hamming_bool = tf.not_equal(x, y)
-    hamming_sum = tf.reduce_sum(tf.cast(hamming_bool, dtype=tf.float32), axis=1, keepdims = True)
-    return hamming_sum
+    
+    
+    #return tf.reduce_mean(tf.cast(tf.not_equal(x1, y1), tf.float32), axis=-1, keepdims=True)
+    distance = np.mean(np.not_equal(x, y))
+    
+    return distance
 
 def chebyshev_distance(vects):
     x, y = vects
@@ -132,7 +134,6 @@ def loss(margin=1):
         Returns:
             A tensor containing contrastive loss as floating point value.
         """
-
         square_pred = ops.square(y_pred)
         margin_square = ops.square(ops.maximum(margin - (y_pred), 0))
         return ops.mean((1 - y_true) * square_pred + (y_true) * margin_square)
