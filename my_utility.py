@@ -1,18 +1,32 @@
 import numpy as np
+<<<<<<< HEAD
+import keras
+from keras import ops
+import keras.backend as K
+import matplotlib.pyplot as plt
+import tensorflow as tf
+=======
 from keras import ops # DA TOGLIERE
 #import matplotlib.pyplot as plt
 import tensorflow as tf # DA TOGLIERE
+>>>>>>> 2e2d1d435bd9c1b3f87ddf13b29768619c4009b9
 import os
 import cv2
 #import csv
 #from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 import numpy as np
+<<<<<<< HEAD
+from tensorflow.keras.callbacks import Callback
+from scipy.spatial.distance import cityblock
+import sklearn.metrics.pairwise as calc
+=======
 #from scipy.spatial.distance import cityblock
 
 import pandas as pd
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset
+>>>>>>> 2e2d1d435bd9c1b3f87ddf13b29768619c4009b9
 
 
 class ImageDataSet(Dataset):
@@ -141,7 +155,7 @@ def euclidean_distance(vects):
     return tf.sqrt(tf.reduce_sum(tf.square(x - y), axis=1, keepdims=True))
 
 def manhattan_distance(vects):
-    x, y = vects
+    x, y = vects   
     return tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
 
 def canberra_distance(vects):
@@ -152,9 +166,12 @@ def canberra_distance(vects):
 
 def hamming_distance(vects):
     x, y = vects
-    hamming_bool = tf.not_equal(x, y)
-    hamming_sum = tf.reduce_sum(tf.cast(hamming_bool, dtype=tf.float32), axis=1)
-    return hamming_sum
+    
+    
+    #return tf.reduce_mean(tf.cast(tf.not_equal(x1, y1), tf.float32), axis=-1, keepdims=True)
+    distance = np.mean(np.not_equal(x, y))
+    
+    return distance
 
 def chebyshev_distance(vects):
     x, y = vects
@@ -164,10 +181,13 @@ def chebyshev_distance(vects):
 
 def bray_curtis_distance(vects):
     x, y = vects
-    sum_diff = tf.reduce_sum(tf.abs(x - y), axis=1)
-    sum_sum = tf.reduce_sum(tf.abs(x + y), axis=1)
-    return sum_diff / sum_sum
+    sum_diff = tf.reduce_sum(tf.abs(x - y), axis=1, keepdims=True)
+    sum_sum = tf.reduce_sum(tf.abs(x + y), axis=1, keepdims=True)
+    
+    return tf.divide(sum_diff, sum_sum)
 
+
+#covariance_matrix da definire
 def mahalanobis_distance(vects, covariance_matrix):
     x, y = vects
     diff = x - y
@@ -215,7 +235,6 @@ def loss(margin=1):
         Returns:
             A tensor containing contrastive loss as floating point value.
         """
-
         square_pred = ops.square(y_pred)
         margin_square = ops.square(ops.maximum(margin - (y_pred), 0))
         return ops.mean((1 - y_true) * square_pred + (y_true) * margin_square)
