@@ -1,32 +1,17 @@
 import numpy as np
-<<<<<<< HEAD
-import keras
-from keras import ops
-import keras.backend as K
-import matplotlib.pyplot as plt
-import tensorflow as tf
-=======
 from keras import ops # DA TOGLIERE
 #import matplotlib.pyplot as plt
 import tensorflow as tf # DA TOGLIERE
->>>>>>> 2e2d1d435bd9c1b3f87ddf13b29768619c4009b9
 import os
 import cv2
-#import csv
-#from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 import numpy as np
-<<<<<<< HEAD
-from tensorflow.keras.callbacks import Callback
-from scipy.spatial.distance import cityblock
-import sklearn.metrics.pairwise as calc
-=======
+
 #from scipy.spatial.distance import cityblock
 
 import pandas as pd
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset
->>>>>>> 2e2d1d435bd9c1b3f87ddf13b29768619c4009b9
 
 
 class ImageDataSet(Dataset):
