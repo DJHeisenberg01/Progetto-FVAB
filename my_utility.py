@@ -86,17 +86,21 @@ class ImageDataSet(Dataset):
         return image, label
 
 
-class ContrastiveLoss(torch.nn.Module):
+class CustomLoss(torch.nn.Module):
 
-    def __init__(self, margin=1.0):
+    def __init__(self, distance):
         super().__init__()
-        self.margin = margin
-
+        self.distance = distance
+        
     def forward(self, output, label):
-        square_pred = (1-label) * torch.pow(output, 2)
-        margin_square = (label) * torch.pow(torch.clamp(self.margin - output, min=0.0), 2)
-        loss_contrastive = torch.mean(square_pred + margin_square)
-        return loss_contrastive
+        # Calcola la distanza tra embedding previsto dalla rete ed embedding reale
+        loss = self.distance(output, label)
+        #print(f"loss: {loss}")
+        #print(f"loss.shape: {loss.shape}")
+        loss = loss.mean()
+        #print(f"loss.shape: {loss.shape}")
+        
+        return loss
 
 #def open_csv(dir,file_name,n):
 #    with open(dir+file_name) as csv_file:
