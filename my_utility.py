@@ -169,6 +169,16 @@ class CustomLoss(torch.nn.Module):
         #print(f"loss: {loss}")
         #print(f"loss.shape: {loss.shape}")        
         return loss
+    
+class CustomLoss2(nn.Module):
+    def __init__(self, distance):
+        super().__init__()
+        self.distance = distance
+        
+    def forward(self, output, label):
+        # Calcola la distanza tra embedding previsto dalla rete ed embedding reale per tutte gli elementi della batch
+        distances = self.distance(output, label)
+        return distances.mean()
 
 
 def custom_euclidean_distance(u, v):
@@ -203,6 +213,10 @@ def custom_seuclidean_distance(u, v):
     
     return seuclidean(u, v, diag)
     
+def custom_canberra_distance_batch(output, label):
+    abs_diff = torch.abs(output - label)
+    sum_abs = torch.abs(output) + torch.abs(label)
+    return torch.mean(abs_diff / (sum_abs + 1e-8), dim=1)
 
 def custom_canberra_distance(u, v):
     # Trasformazione degli oggetti in ndarray per poter usare la funzione di scipy.spatial.distance    
