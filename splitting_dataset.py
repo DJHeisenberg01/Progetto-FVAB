@@ -1,6 +1,10 @@
 import os
 import shutil
 import random
+import cv2
+from utility_face_detection import face_detection, TrainDataset
+import csv
+from torch.utils.data import DataLoader
 
 def split_data(source_dir, train_dir, test_dir, train_ratio=0.8):
     
@@ -16,6 +20,7 @@ def split_data(source_dir, train_dir, test_dir, train_ratio=0.8):
         
         if os.path.isdir(category_path):
             images = os.listdir(category_path)
+            random.seed(42)
             random.shuffle(images)
             
             train_size = int(len(images) * train_ratio)
@@ -32,9 +37,9 @@ def split_data(source_dir, train_dir, test_dir, train_ratio=0.8):
                 os.makedirs(test_category_dir)
             
             for image in train_images:
-                src = os.path.join(category_path, image)
-                dst = os.path.join(train_category_dir, image)
-                shutil.copy(src, dst)
+                image_crop = face_detection(category_path + "\\" + image)
+                dst = os.path.join(train_category_dir, image[:11])
+                cv2.imwrite(dst  + '.jpg', image_crop)
             
             for image in test_images:
                 src = os.path.join(category_path, image)
@@ -42,8 +47,13 @@ def split_data(source_dir, train_dir, test_dir, train_ratio=0.8):
                 shutil.copy(src, dst)
     
     print("Splitting eseguito!")
+    
+def codify_train_images(train_images):
+    images = TrainDataset(img_dir=train_images)
+    img_dataloader = DataLoader(images, batch_size=1, drop_last=True)
+            
 
-source_directory = 'C:\\Users\\antho\\Desktop\\faceDetection\\faces_0'
+source_directory = 'C:\\Users\\antho\\Desktop\\faceDetection\\face_images'
 
 train_directory = 'C:\\Users\\antho\\Desktop\\faceDetection\\dataset_splitted\\train'
 test_directory = 'C:\\Users\\antho\\Desktop\\faceDetection\\dataset_splitted\\test'
