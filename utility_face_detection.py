@@ -1,9 +1,12 @@
 
 import numpy as np
+import pandas as pd
+import random
+import shutil
 import os
 import cv2
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 
 from network_files import my_utility as mu
 
@@ -11,13 +14,14 @@ from network_files import my_utility as mu
 def max_area(faces):
     max_area = 0
     for f in faces:
-        (x1, y1, w1, h1) = f
+        (_, _, w1, h1) = f
         area = w1 * h1
         if(area > max_area):
             max_area = area
             (x, y, w, h) = f
 
     return (x, y, w, h)
+
 
 def face_detection(image_path):
     face_classifier = cv2.CascadeClassifier(
@@ -77,9 +81,9 @@ class TrainDataset(Dataset):
         # E converto l'array in un unico tensore
         tot_images = torch.from_numpy(tot_images)
         
-        print("Data loaded.")
-        print(tot_images.shape)
-        print(len(tot_images))
+        #print("Data loaded.")
+        #print(tot_images.shape)
+        #print(len(tot_images))
         return tot_images
         
 
@@ -90,4 +94,71 @@ class TrainDataset(Dataset):
         image = self.img_tensor[idx, :, :, :]
         # Restituiamo il tensore di una sola immagine
         return image
+
+
+def split_data(user_path, train_ratio=0.8):
+    train_path = os.path.join(user_path, "dataset_splitted\\train")
+    test_path = os.path.join(user_path, "dataset_splitted\\test")
     
+    subjects_path = os.path.join(user_path, "face_images")
+    
+    for label in os.listdir(subjects_path):
+        label_path = os.path.join(subjects_path, label)
+        
+        if os.path.isdir(label_path):
+            images = os.listdir(label_path)
+            random.seed(42)
+            random.shuffle(images)
+            
+            train_size = int(len(images) * train_ratio)
+            
+            train_images = images[:train_size]
+            test_images = images[train_size:]
+            
+            train_label_path = os.path.join(train_path, label)
+            test_label_path = os.path.join(test_path, label)
+            
+            if not os.path.exists(train_label_path):
+                os.makedirs(train_label_path)
+            if not os.path.exists(test_label_path):
+                os.makedirs(test_label_path)
+            
+            for image in train_images:
+                image_path = os.path.join(label_path, image)
+                image_crop = face_detection(image_path)
+                dst = os.path.join(train_label_path, image[:11])
+                cv2.imwrite(dst + '.jpg', image_crop)
+            
+            for image in test_images:
+                src = os.path.join(label_path, image)
+                dst = os.path.join(test_label_path, image)
+                shutil.copy(src, dst)
+    
+    print("Splitting eseguito!")
+
+
+def create_train_template(user_path):
+    train_path = os.path.join(user_path, "dataset_splitted\\train")
+    
+    model = mu.SiameseNeuralNetwork()
+    model_path = torch.load(f="model_all_images")
+    model.load_state_dict(model_path)
+    model.eval()
+    
+    codify_list = list()    
+    labels_list = list()
+    
+    for i in range(1,25):
+        label = str(i).rjust(2,'0')
+        train_curr_images = os.path.join(train_path, label)
+        imagesDataSet = TrainDataset(img_dir=train_curr_images)
+        img_dataloader = DataLoader(imagesDataSet, batch_size=1, drop_last=True)
+        
+        for image in img_dataloader:
+            codify_list.append(model(image).cpu().detach().numpy().flatten())
+            labels_list.append(i)
+            
+    codify_df = pd.DataFrame(codify_list)
+    codify_df.insert(384, "Label", labels_list)
+    
+    codify_df.to_csv("template.csv", sep=",", index = False)

@@ -6,7 +6,6 @@ import pandas as pd
 
 import torch
 from torch import nn
-import torch.nn.functional as F
 from torch.utils.data import Dataset
 
 from scipy.spatial.distance import euclidean, cityblock, seuclidean, canberra, mahalanobis, chebyshev, braycurtis
