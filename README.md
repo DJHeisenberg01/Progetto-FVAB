@@ -1,1 +1,9 @@
-# Distance Function Estimation for Fractal Coding Emulation
+# Evaluating Distance Functions in Fractal-Encoded Siamese Networks
+
+
+## Abstract
+
+## Prerequisiti
+
+
+## Script and Notebook Description
