@@ -8,7 +8,7 @@ L'approccio prevede la pre-elaborazione di due dataset ampiamente utilizzati, *C
 
 È stato analizzato l'impatto della variazione del numero di immagini modello per soggetto sull'**accuratezza** della classificazione dimostrando un progressivo miglioramento delle prestazioni di classificazione all'aumentare delle immagini. 
 
-Questi risultati sottolineano l'importanza della funzione di distanza utilizzata ma anche del dataset utilizzato per task di face recognition.
+* Questi risultati sottolineano l'importanza della funzione di distanza utilizzata ma anche del dataset utilizzato per task di face recognition.
 
 ## Prerequisiti
 
