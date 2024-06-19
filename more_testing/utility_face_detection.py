@@ -138,7 +138,7 @@ def split_data(user_path, train_ratio=0.8):
 
 
 def create_train_template(user_path):
-    train_path = os.path.join(user_path, "train_5_faces")
+    train_path = os.path.join(user_path, "train_15_faces")
     
     model = mu.SiameseNeuralNetwork()
     model_path = torch.load(f="model_all_images")

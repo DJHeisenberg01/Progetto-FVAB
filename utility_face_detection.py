@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from network_files import my_utility as mu
 
-
+#Estrae dal dataset originale face_0 solo le immagini su cui viene riconosciuto un volto dal face detector
 def max_area(faces):
     max_area = 0
     for f in faces:
@@ -22,7 +22,7 @@ def max_area(faces):
 
     return (x, y, w, h)
 
-
+#Estrazione dei volti
 def face_detection(image_path):
     face_classifier = cv2.CascadeClassifier(
         cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
@@ -42,7 +42,7 @@ def face_detection(image_path):
     
     return img_crop
     
-
+#Creazione del dataset
 class TrainDataset(Dataset):
     def __init__(self, img_dir):
         self.img_dir = img_dir

@@ -14,11 +14,11 @@ user_path = "C:\\Users\\antho\\Desktop\\faceDetection"
 
 
 
-'''image_train_path = os.path.join(user_path, "train_5_images")
+image_train_path = os.path.join(user_path, "train_15_images")
 
 for i in range(1, 25):
     label = str(i).rjust(2,'0')
-    write_path = os.path.join(user_path, "train_5_faces", label)
+    write_path = os.path.join(user_path, "train_15_faces", label)
     if not os.path.exists(write_path):
             os.makedirs(write_path)
         
@@ -29,6 +29,6 @@ for i in range(1, 25):
             image_crop = face_detection(image_path)
             dst_path = os.path.join(write_path, file_name)
             cv2.imwrite(dst_path + '.jpg', image_crop)
-            '''
+            
             
 create_train_template(user_path)

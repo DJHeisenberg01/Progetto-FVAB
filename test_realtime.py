@@ -71,9 +71,7 @@ def test_matching(test_path, template_path):
     return out_true_labels, out_pred_labels
 
 
-#test_path = 'C:\\Users\\antho\\Desktop\\faceDetection\\dataset_splitted\\test\\'
-#test_path = "C:\\Users\\User\\Progetti_universita\\Progetto-FVAB\\faceDetection\\dataset_splitted\\test"
-#template_path = "C:\\Users\\User\\Progetti_universita\\Progetto-FVAB\\template.csv"
+
 
 # SCRIVERE PATH FINO ALLA CARTELLA CONTENENTE LE IMMAGINI (FUORI)
 user_path = "C:\\Users\\User\\Progetti_universita\\Progetto-FVAB"

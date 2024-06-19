@@ -17,7 +17,7 @@ def max_area(faces):
 
     return (x, y, w, h)
 
-
+#Estrae dal dataset originale face_0 solo le immagini su cui viene riconosciuto un volto dal face detector
 def discard_no_faces(user_path):
     image_folder = "faces_0\\"
 
@@ -33,7 +33,6 @@ def discard_no_faces(user_path):
         
         read_path = os.path.join(user_path, image_folder, label)
         
-        #print(f"Cartella Numero {str(i)}")
         for file_name in os.listdir(read_path):
             if not file_name.startswith('.'):
                 image_path = os.path.join(read_path, file_name)
@@ -59,6 +58,4 @@ def discard_no_faces(user_path):
                 except:
                     count_scartate += 1
 
-        #print(f"Numero di scartate: {str(count_scartate)}")
-        #print(f"Numero di acquisite: {str(count_acquisite)}")
         
