@@ -160,5 +160,5 @@ def create_train_template(user_path):
             
     codify_df = pd.DataFrame(codify_list)
     codify_df.insert(384, "Label", labels_list)
-    
-    codify_df.to_csv("template.csv", sep=",", index = False)
+    template_path = os.path.join(user_path, "template.csv")
+    codify_df.to_csv(template_path, sep=",", index = False)

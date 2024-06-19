@@ -1,4 +1,4 @@
-from faceDetection.face_detection import discard_no_faces
+from face_detection.face_detection import discard_no_faces
 from utility_face_detection import split_data, create_train_template
 
 # SPECIFICARE PATH FINO ALLA CARTELLA PRIMA DI QUELLA CONTENENTE LE IMMAGINI 

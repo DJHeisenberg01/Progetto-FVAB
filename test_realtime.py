@@ -96,9 +96,9 @@ def test_matching(test_path, template_path):
 
 
 # SCRIVERE PATH FINO ALLA CARTELLA CONTENENTE LE IMMAGINI (FUORI)
-user_path = "C:\\Users\\User\\Progetti_universita\\Progetto-FVAB"
+user_path = "C:\\Users\\User\\Progetti_universita\\Progetto-FVAB\\faceDetection"
 
-test_path = os.path.join(user_path, "faceDetection\\dataset_splitted\\test")
+test_path = os.path.join(user_path, "dataset_splitted\\test")
 template_path = os.path.join(user_path, "template.csv")
 
 # Avvio del matching tra le immagini di testing ed il template di training
